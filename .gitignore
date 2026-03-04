@@ -4,3 +4,6 @@ boot/stage1/pm_entry.bin
 boot/stage2/pm_setup.bin
 boot/stage3/longmode.bin
 kernel/entry.o
+kernel/kernel.o
+kernel/kernel.elf
+kernel/kernel.bin
