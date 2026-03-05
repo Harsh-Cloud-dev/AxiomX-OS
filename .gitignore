@@ -7,3 +7,6 @@ kernel/entry.o
 kernel/kernel.o
 kernel/kernel.elf
 kernel/kernel.bin
+kernel/vga.o
+kernel/idt.o
+kernel/idt_asm.o
