@@ -7,7 +7,7 @@ void kernel_main(void) {
     if (serial_init(COM1) == 0) {
         serial_puts("\n\n");
         serial_puts("===========================================\n");
-        serial_puts("  MyOS  |  Serial Console Active (COM1)\n");
+        serial_puts("  Axiom  |  Serial Console Active (COM1)\n");
         serial_puts("===========================================\n");
         serial_printf("  Kernel at : %p\n", (void *)0x100000);
         serial_printf("  COM1 port : 0x%x\n", (uint64_t)COM1);
@@ -21,7 +21,7 @@ void kernel_main(void) {
     uint8_t good = VGA_COLOR(VGA_LIGHT_GREEN, VGA_BLUE);
 
     vga_clear(base);
-    vga_puts_at(0, 0, hi,   "  MyOS  |  x86_64  |  64-bit Long Mode  |  Kernel v0.1");
+    vga_puts_at(0, 0, hi,   "  Axiom  |  x86_64  |  64-bit Long Mode  |  Kernel v0.1");
     vga_puts_at(1, 0, info, "--------------------------------------------------------");
     vga_puts_at(2, 2, info, "Kernel loaded at : 0x100000");
     vga_puts_at(3, 2, info, "Mode             : 64-bit Long Mode");
