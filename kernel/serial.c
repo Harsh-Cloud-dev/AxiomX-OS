@@ -1,6 +1,5 @@
 #include "serial.h"
 
-/* UART register offsets */
 #define UART_DATA      0
 #define UART_IER       1
 #define UART_BAUD_LOW  0
@@ -35,16 +34,16 @@ static inline uint8_t inb(uint16_t port) {
 }
 
 int serial_init(uint16_t port) {
-    outb(port + UART_IER,  0x00);
-    outb(port + UART_LCR,  LCR_DLAB);
+    outb(port + UART_IER,       0x00);
+    outb(port + UART_LCR,       LCR_DLAB);
     outb(port + UART_BAUD_LOW,  (uint8_t)(BAUD_115200 & 0xFF));
     outb(port + UART_BAUD_HIGH, (uint8_t)((BAUD_115200 >> 8) & 0xFF));
-    outb(port + UART_LCR,  LCR_8N1);
-    outb(port + UART_FCR,  FCR_ENABLE | FCR_CLEAR_RX | FCR_CLEAR_TX | FCR_TRIG_14);
-    outb(port + UART_MCR,  MCR_DTR | MCR_RTS | MCR_OUT2);
+    outb(port + UART_LCR,       LCR_8N1);
+    outb(port + UART_FCR,       FCR_ENABLE | FCR_CLEAR_RX | FCR_CLEAR_TX | FCR_TRIG_14);
+    outb(port + UART_MCR,       MCR_DTR | MCR_RTS | MCR_OUT2);
 
-    /* Loopback test */
-    outb(port + UART_MCR, MCR_LOOPBACK);
+    /* loopback test */
+    outb(port + UART_MCR,  MCR_LOOPBACK);
     outb(port + UART_DATA, 0xAE);
     if (inb(port + UART_DATA) != 0xAE) return -1;
 
@@ -54,7 +53,9 @@ int serial_init(uint16_t port) {
 }
 
 static inline void wait_tx(void) {
-    while (!(inb(active_port + UART_LSR) & LSR_THR_EMPTY));
+    uint32_t timeout = 100000;     
+    while (!(inb(active_port + UART_LSR) & LSR_THR_EMPTY))
+        if (--timeout == 0) return; 
 }
 
 void serial_putc(char c) {
@@ -99,7 +100,6 @@ static void puthex_raw(uint64_t val, int upper) {
     }
 }
 
-/* Minimal va_list using GCC builtins — no stdarg.h needed */
 typedef __builtin_va_list va_list;
 #define va_start(v,l) __builtin_va_start(v,l)
 #define va_arg(v,l)   __builtin_va_arg(v,l)
@@ -112,13 +112,16 @@ void serial_printf(const char *fmt, ...) {
         if (*fmt != '%') { serial_putc(*fmt++); continue; }
         fmt++;
         switch (*fmt) {
-            case 's': { const char *s = va_arg(args, const char *);
-                        serial_puts(s ? s : "(null)"); break; }
+            case 's': {
+                const char *s = va_arg(args, const char *);
+                serial_puts(s ? s : "(null)");
+                break;
+            }
             case 'c': serial_putc((char)va_arg(args, int)); break;
-            case 'd': putdec_signed((int64_t)va_arg(args, long long)); break;
-            case 'u': serial_putdec((uint64_t)va_arg(args, unsigned long long)); break;
-            case 'x': puthex_raw((uint64_t)va_arg(args, unsigned long long), 0); break;
-            case 'X': puthex_raw((uint64_t)va_arg(args, unsigned long long), 1); break;
+            case 'd': putdec_signed((int64_t)(long)va_arg(args, int)); break;        
+            case 'u': serial_putdec((uint64_t)(unsigned long)va_arg(args, unsigned int)); break;  
+            case 'x': puthex_raw((uint64_t)(unsigned long)va_arg(args, unsigned int), 0); break;  
+            case 'X': puthex_raw((uint64_t)(unsigned long)va_arg(args, unsigned int), 1); break;  
             case 'p': {
                 serial_puts("0x");
                 uint64_t p = (uint64_t)va_arg(args, void *);
