@@ -51,7 +51,7 @@ static void update_statusbar_if_needed(void) {
     for (int c = 0; c < 80; c++)
         vga[24 * 80 + c] = (uint16_t)(bar << 8 | ' ');
 
-    const char *title = "Axiom v0.1";
+    const char *title = "AxiomX v0.1";
     int col = 1;
     for (int i = 0; title[i]; i++)
         vga[24 * 80 + col++] = (uint16_t)(bar << 8 | (uint8_t)title[i]);
