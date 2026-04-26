@@ -46,7 +46,7 @@ ISR_ERR   17
 ISR_NOERR 18
 ISR_NOERR 19
 ISR_NOERR 20
-ISR_ERR   21
+ISR_NOERR 21
 ISR_NOERR 22
 ISR_NOERR 23
 ISR_NOERR 24
@@ -75,6 +75,12 @@ IRQ 13, 45
 IRQ 14, 46
 IRQ 15, 47
 
+[global isr_default]
+isr_default:
+    push qword 0
+    push qword 0xFF
+    jmp  isr_common
+
 isr_common:
     push rax
     push rbx
@@ -93,22 +99,22 @@ isr_common:
     push r15
     mov  rdi, rsp
     call isr_handler
-    pop r15
-    pop r14
-    pop r13
-    pop r12
-    pop r11
-    pop r10
-    pop r9
-    pop r8
-    pop rbp
-    pop rdi
-    pop rsi
-    pop rdx
-    pop rcx
-    pop rbx
-    pop rax
-    add rsp, 16
+    pop  r15
+    pop  r14
+    pop  r13
+    pop  r12
+    pop  r11
+    pop  r10
+    pop  r9
+    pop  r8
+    pop  rbp
+    pop  rdi
+    pop  rsi
+    pop  rdx
+    pop  rcx
+    pop  rbx
+    pop  rax
+    add  rsp, 16
     iretq
 
 irq_common:
@@ -129,20 +135,20 @@ irq_common:
     push r15
     mov  rdi, rsp
     call irq_handler
-    pop r15
-    pop r14
-    pop r13
-    pop r12
-    pop r11
-    pop r10
-    pop r9
-    pop r8
-    pop rbp
-    pop rdi
-    pop rsi
-    pop rdx
-    pop rcx
-    pop rbx
-    pop rax
-    add rsp, 16
+    pop  r15
+    pop  r14
+    pop  r13
+    pop  r12
+    pop  r11
+    pop  r10
+    pop  r9
+    pop  r8
+    pop  rbp
+    pop  rdi
+    pop  rsi
+    pop  rdx
+    pop  rcx
+    pop  rbx
+    pop  rax
+    add  rsp, 16
     iretq
