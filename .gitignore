@@ -1,15 +1,8 @@
-os.img
-boot/stage0/boot.bin
-boot/stage1/pm_entry.bin
-boot/stage2/pm_setup.bin
-boot/stage3/longmode.bin
-kernel/entry.o
-kernel/kernel.o
-kernel/kernel.elf
-kernel/kernel.bin
-kernel/vga.o
-kernel/idt.o
-kernel/idt_asm.o
-kernel/isr.o
-kernel/serial.o
-kernel/E820.o
+# Build artifacts
+*.bin
+*.o
+*.elf
+*.img
+*.iso
+*.vmdk
+*.bak
