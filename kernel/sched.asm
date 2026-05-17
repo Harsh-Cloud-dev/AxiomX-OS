@@ -1,5 +1,5 @@
 ; =========================================================
-; sched.asm — Context switch for Axiom kernel
+; sched.asm — Context switch for AxiomX kernel
 ;
 ; void context_switch(uint64_t *old_rsp, uint64_t new_rsp)
 ;   rdi = pointer to old process's rsp field in PCB
